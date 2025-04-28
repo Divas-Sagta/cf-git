@@ -1,0 +1,4 @@
+templateFilePath: template.yaml
+parameters:
+  - parameterKey: KeyName
+    parameterValue: demo
