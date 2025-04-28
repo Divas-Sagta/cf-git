@@ -1,46 +1,17 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Description: EC2 instance in us-east-1 with Nginx and security group for ports 22 and 80
-
-Parameters:
-  KeyName:
-    Description: Name of an existing EC2 KeyPair to SSH into the instance
-    Type: AWS::EC2::KeyPair::KeyName
-
+AWSTemplateFormatVersion: 2010-09-09
+Description: This is my gitsync demo template
 Resources:
-  MySecurityGroup:
-    Type: AWS::EC2::SecurityGroup
+  GitsyncVpc:
+    Type: AWS::EC2::VPC
     Properties:
-      GroupDescription: Enable SSH and HTTP access
-      SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 22
-        ToPort: 22
-        CidrIp: 0.0.0.0/0
-      - IpProtocol: tcp
-        FromPort: 80
-        ToPort: 80
-        CidrIp: 0.0.0.0/0
-
-  MyEC2Instance:
-    Type: AWS::EC2::Instance
+      CidrBlock: 10.0.0.1/16
+      EnableDnsSupport: true
+      Tags:
+      - Key: Name
+        Value: gitsyncvpc
+  GitsyncSubnet:
+    Type: AWS::EC2::Subnet
     Properties:
-      InstanceType: t2.micro
-      KeyName: !Ref KeyName
-      ImageId: ami-0e449927258d45bc4 # Amazon Linux 2 AMI (us-east-1)
-      SecurityGroupIds:
-      - !Ref MySecurityGroup
-      UserData:
-        Fn::Base64: !Sub |
-          #!/bin/bash
-          yum update -y
-          amazon-linux-extras install nginx1 -y
-          systemctl enable nginx
-          systemctl start nginx
-
-Outputs:
-  InstancePublicIP:
-    Description: Public IP of the EC2 instance
-    Value: !GetAtt MyEC2Instance.PublicIp
-  WebURL:
-    Description: Access Nginx via browser
-    Value: !Sub "http://${MyEC2Instance.PublicDnsName}"
+      VpcId: !Ref GitsyncVpc
+      CidrBlock: 10.0.0.1/24
+      Tags:

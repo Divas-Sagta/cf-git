@@ -1,4 +1,4 @@
-templateFilePath: template.yaml
-parameters:
-  - parameterKey: KeyName
-    parameterValue: demo
+template-file-path: ./template.yaml
+tags:
+Name: 'gitsync'
+Project: 'Demo'
