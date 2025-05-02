@@ -9,7 +9,7 @@ Resources:
       EnableDnsSupport: true
       Tags:
       - Key: Name
-        Value: gitsyncvpc-divas
+        Value: gitsyncvpc
 
   GitsyncSubnet:
     Type: AWS::EC2::Subnet
